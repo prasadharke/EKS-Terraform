@@ -1,5 +1,5 @@
 resource "aws_iam_role" "nodes" {
-  name = "eks-node-group-nodes"
+  name = "eks-node-group-nodes-prod"
 
   assume_role_policy = jsonencode({
     Statement = [{
@@ -30,20 +30,20 @@ resource "aws_iam_role_policy_attachment" "nodes_amazon_ec2_container_registry_r
 
 resource "aws_eks_node_group" "private_nodes" {
   cluster_name    = aws_eks_cluster.cluster.name
-  node_group_name = "small-nodes"
+  node_group_name = "large-nodes"
   node_role_arn   = aws_iam_role.nodes.arn
 
   subnet_ids = [
-    aws_subnet.public-subnet-a.id,
-    aws_subnet.public-subnet-b.id
+    aws_subnet.private-subnet-a.id,
+    aws_subnet.private-subnet-b.id
   ]
 
   capacity_type  = "ON_DEMAND"
-  instance_types = ["t3.medium"]
+  instance_types = ["t3.xlarge"]
 
   scaling_config {
-    desired_size = 1
-    max_size     = 5
+    desired_size = 3
+    max_size     = 3
     min_size     = 1
   }
 
@@ -52,11 +52,11 @@ resource "aws_eks_node_group" "private_nodes" {
   }
 
    tags = {
-    Name = "sbed-services"
+    Name = "dsn-digit-services"
   }
 
   labels = {
-    role = "sbed"
+    role = "dsn-digit"
   }
 
   depends_on = [
@@ -68,20 +68,20 @@ resource "aws_eks_node_group" "private_nodes" {
 
 resource "aws_eks_node_group" "large_nodes" {
   cluster_name    = aws_eks_cluster.cluster.name
-  node_group_name = "large-nodes"
+  node_group_name = "small-nodes"
   node_role_arn   = aws_iam_role.nodes.arn
 
   subnet_ids = [
-    aws_subnet.public-subnet-a.id,
-    aws_subnet.public-subnet-b.id
+    aws_subnet.private-subnet-a.id,
+    aws_subnet.private-subnet-b.id
   ]
 
   capacity_type  = "ON_DEMAND"
-  instance_types = ["t3a.xlarge"]
+  instance_types = ["t3.xlarge"]
 
   scaling_config {
-    desired_size = 3
-    max_size     = 5
+    desired_size = 1
+    max_size     = 3
     min_size     = 1
   }
 
@@ -90,11 +90,11 @@ resource "aws_eks_node_group" "large_nodes" {
   }
 
   tags = {
-    Name = "sbed"
+    Name = "dsn-digit"
   }
 
    labels = {
-    role = "sb"  
+    role = "dsn"  
   }
 
   depends_on = [

@@ -1,26 +1,16 @@
-provider "helm" {
-  kubernetes {
-    host                   = aws_eks_cluster.cluster.endpoint
-    cluster_ca_certificate = base64decode(aws_eks_cluster.cluster.certificate_authority[0].data)
-    exec {
-      api_version = "client.authentication.k8s.io/v1beta1"
-      args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.cluster.id]
-      command     = "aws"
-    }
-  }
-}
-
 resource "helm_release" "metrics-server" {
-  name = "metrics-server"
-
+  name       = "metrics-server"
   repository = "https://kubernetes-sigs.github.io/metrics-server/"
   chart      = "metrics-server"
-  namespace  = "default"
-  version    = "3.8.2"
+  namespace  = "kube-system"
+  version    = "3.12.1"
 
   set {
-    name  = "metrics.enabled"
-    value = false
+    name  = "args[0]"
+    value = "--kubelet-insecure-tls"
   }
-
+  set {
+    name  = "args[1]"
+    value = "--kubelet-preferred-address-types=InternalIP"
+  }
 }

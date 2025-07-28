@@ -6,7 +6,7 @@ data "aws_iam_policy_document" "aws_load_balancer_controller_assume_role_policy"
     condition {
       test     = "StringEquals"
       variable = "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub"
-      values   = ["system:serviceaccount:default:aws-load-balancer-controller"]
+      values   = ["system:serviceaccount:kube-system:aws-load-balancer-controller-prod"]
     }
 
     principals {
@@ -16,21 +16,21 @@ data "aws_iam_policy_document" "aws_load_balancer_controller_assume_role_policy"
   }
 }
 
-resource "aws_iam_role" "aws_load_balancer_controller" {
+resource "aws_iam_role" "aws_load_balancer_controller-prod" {
   assume_role_policy = data.aws_iam_policy_document.aws_load_balancer_controller_assume_role_policy.json
-  name               = "aws-load-balancer-controller"
+  name               = "aws-load-balancer-controller-prod"
 }
 
 resource "aws_iam_policy" "aws_load_balancer_controller" {
   policy = file("./AWSLoadBalancerController.json")
-  name   = "AWSLoadBalancerController"
+  name   = "AWSLoadBalancerControllerprod"
 }
 
 resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller_attach" {
-  role       = aws_iam_role.aws_load_balancer_controller.name
+  role       = aws_iam_role.aws_load_balancer_controller-prod.name
   policy_arn = aws_iam_policy.aws_load_balancer_controller.arn
 }
 
 output "aws_load_balancer_controller_role_arn" {
-  value = aws_iam_role.aws_load_balancer_controller.arn
+  value = aws_iam_role.aws_load_balancer_controller-prod.arn
 }

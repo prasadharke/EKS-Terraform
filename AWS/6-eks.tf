@@ -28,7 +28,6 @@ resource "aws_eks_cluster" "cluster" {
   role_arn = aws_iam_role.eks-cluster.arn
 
   vpc_config {
-
     endpoint_private_access = false
     endpoint_public_access  = true
     public_access_cidrs     = ["0.0.0.0/0"]
@@ -48,6 +47,21 @@ resource "null_resource" "update_kubeconfig" {
   depends_on = [aws_eks_cluster.cluster]
 
   provisioner "local-exec" {
-    command = "aws eks update-kubeconfig --name ${var.cluster_name} "
+    command = "aws eks --region ${var.region} update-kubeconfig --name ${var.cluster_name}"
   }
+}
+
+output "cluster_endpoint" {
+  description = "Endpoint for EKS control plane"
+  value       = aws_eks_cluster.cluster.endpoint
+}
+
+output "cluster_certificate_authority_data" {
+  description = "Base64 encoded certificate data required to communicate with the cluster"
+  value       = aws_eks_cluster.cluster.certificate_authority[0].data
+}
+
+output "cluster_id" {
+  description = "EKS cluster ID"
+  value       = aws_eks_cluster.cluster.id
 }

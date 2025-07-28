@@ -204,7 +204,7 @@ install_aws_dependencies() {
     terraform init
     terraform plan
     terraform apply -auto-approve
-    aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name sbai
+   # aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name 
     cd ../helmcharts || exit
   
 }

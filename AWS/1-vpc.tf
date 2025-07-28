@@ -6,6 +6,6 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "sunbird-ed-vpc"
+    Name = "dsn-digit-vpc"
   }
 }

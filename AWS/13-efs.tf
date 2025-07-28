@@ -1,12 +1,12 @@
 resource "aws_efs_file_system" "eks" {
-  creation_token = "eks"
+  creation_token = "eks-prod"
 
   performance_mode = "generalPurpose"
   throughput_mode  = "bursting"
   encrypted        = true
 
   tags = {
-    Name = "eks"
+    Name = "eks-prod"
   }
 }
 
