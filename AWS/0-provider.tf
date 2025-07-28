@@ -11,7 +11,7 @@ variable "cluster_version" {
 }
 
 variable "region" {
-  default = "us-east-1"
+  default = "af-south-1"
 }
 
 variable "ssh_key" {

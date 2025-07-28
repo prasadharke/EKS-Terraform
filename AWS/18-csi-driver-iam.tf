@@ -27,7 +27,7 @@ resource "aws_iam_role_policy_attachment" "amazon_ebs_csi_driver" {
 }
 
 # Optional: only if you use your own KMS key to encrypt EBS volumes
-# TODO: replace arn:aws:kms:us-east-1:424432388155:key/7a8ea545-e379-4ac5-8903-3f5ae22ea847 with your KMS key id arn!
+# TODO: replace arn:aws:kms:af-south-1:424432388155:key/7a8ea545-e379-4ac5-8903-3f5ae22ea847 with your KMS key id arn!
 # resource "aws_iam_policy" "eks_ebs_csi_driver_kms" {
 #   name = "KMS_Key_For_Encryption_On_EBS"
 
@@ -42,7 +42,7 @@ resource "aws_iam_role_policy_attachment" "amazon_ebs_csi_driver" {
 #         "kms:ListGrants",
 #         "kms:RevokeGrant"
 #       ],
-#       "Resource": ["arn:aws:kms:us-east-1:424432388155:key/7a8ea545-e379-4ac5-8903-3f5ae22ea847"],
+#       "Resource": ["arn:aws:kms:af-south-1:424432388155:key/7a8ea545-e379-4ac5-8903-3f5ae22ea847"],
 #       "Condition": {
 #         "Bool": {
 #           "kms:GrantIsForAWSResource": "true"
@@ -58,7 +58,7 @@ resource "aws_iam_role_policy_attachment" "amazon_ebs_csi_driver" {
 #         "kms:GenerateDataKey*",
 #         "kms:DescribeKey"
 #       ],
-#       "Resource": ["arn:aws:kms:us-east-1:424432388155:key/7a8ea545-e379-4ac5-8903-3f5ae22ea847"]
+#       "Resource": ["arn:aws:kms:af-south-1:424432388155:key/7a8ea545-e379-4ac5-8903-3f5ae22ea847"]
 #     }
 #   ]
 # }
